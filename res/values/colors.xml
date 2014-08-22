@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <color name="com_parse_ui_parse_login_form">#FFFFFFFF</color>
+    
+    <color name="com_parse_ui_parse_login_button">#FF444444</color>
+    <color name="com_parse_ui_parse_login_button_push">#FF262626</color>
+    <color name="com_parse_ui_parse_login_button_focus">#35CCCCCC</color>
+    <color name="com_parse_ui_parse_login_help_button_label">#202020</color>
+    <color name="com_parse_ui_parse_login_help_button_label_push">#AAAAAA</color>
+    <color name="com_parse_ui_parse_login_help_button_label_focus">#CCCCCC</color>
+    <color name="com_parse_ui_parse_login_text_hint">#AAAAAA</color>
+    <color name="com_parse_ui_parse_login_display_text">@android:color/white</color>
+    <color name="com_parse_ui_facebook_login_button">#3B5998</color>
+    <color name="com_parse_ui_facebook_login_button_push">#2E4677</color>
+    <color name="com_parse_ui_facebook_login_button_focus">#304F8B</color>
+    <color name="com_parse_ui_twitter_login_button">#2DAAE2</color>
+    <color name="com_parse_ui_twitter_login_button_push">#2588B5</color>
+    <color name="com_parse_ui_twitter_login_button_focus">#2788BE</color>
+
+	<color name="actionbar_text">#ffffffff</color>
+    <color name="plainbtn_text">#ff000000</color>
+    
+    <color name="button_label">#202020</color>
+    <color name="button_label_push">#AAAAAA</color>
+    <color name="button_label_focus">#CCCCCC</color>
+</resources>
