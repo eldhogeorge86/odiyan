@@ -1,5 +1,6 @@
 package com.fiftyradios.odiyan;
 
+import com.parse.ParseAnalytics;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 
@@ -29,6 +30,8 @@ public class MainActivity extends ActionBarActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
+        	
+        	ParseAnalytics.trackAppOpened(getIntent());
         	
         	ParseUser user = ParseUser.getCurrentUser();
 	        if(user == null){

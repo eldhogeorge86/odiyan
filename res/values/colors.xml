@@ -23,4 +23,8 @@
     <color name="button_label">#202020</color>
     <color name="button_label_push">#AAAAAA</color>
     <color name="button_label_focus">#CCCCCC</color>
+    
+    <color name="listview_bg">#FFDDDDDD</color>
+    <color name="listitem_bg">#FFFFFFFF</color>
+    <color name="listitemdivider_bg">#FFAAAAAA</color>
 </resources>
