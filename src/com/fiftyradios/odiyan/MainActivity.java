@@ -3,17 +3,12 @@ package com.fiftyradios.odiyan;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.os.Build;
 
 
@@ -46,7 +41,7 @@ public class MainActivity extends ActionBarActivity implements
 	        else{
 	        	
 	            getSupportFragmentManager().beginTransaction()
-	                    .replace(fragmentContainer, new PlaceholderFragment())
+	                    .replace(fragmentContainer, new HomeFragment())
 	                    .commit();
 	        }
         }
@@ -112,7 +107,7 @@ public class MainActivity extends ActionBarActivity implements
     	getSupportActionBar().show();
     	
     	getSupportFragmentManager().beginTransaction()
-	        .replace(fragmentContainer, new PlaceholderFragment())
+	        .replace(fragmentContainer, new HomeFragment())
 	        .commit();
     }
     
@@ -129,67 +124,5 @@ public class MainActivity extends ActionBarActivity implements
     	if (progressDialog != null) {
     		progressDialog.dismiss();
     	}
-    }
-    
-    public static class PlaceholderFragment extends Fragment implements ActionBar.TabListener {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-        	
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            
-            ActionBar actBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
-            actBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            
-            actBar.removeAllTabs();
-            
-            actBar.addTab(actBar.newTab().setIcon(R.drawable.my_feed).setTabListener(this));
-            actBar.addTab(actBar.newTab().setIcon(R.drawable.friends).setTabListener(this));
-            actBar.addTab(actBar.newTab().setIcon(R.drawable.notifications).setTabListener(this));
-            actBar.addTab(actBar.newTab().setIcon(R.drawable.more).setTabListener(this));
-            
-            return rootView;
-        }
-        
-        @Override
-        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {        	
-        	
-        	int pos = tab.getPosition();
-        	if(pos == 0){
-        		setTitle(R.string.my_feed);
-        	}
-        	else if(pos == 1){
-        		setTitle(R.string.friends);
-        	}
-        	else if(pos == 2){
-        		setTitle(R.string.notifications);
-        	}
-        	else if(pos == 3){
-        		setTitle(R.string.more);
-        	}
-        }
-
-        @Override
-        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        }
-
-        @Override
-        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        }
-        
-        private void setTitle(int resId){
-        	ActionBarActivity act = (ActionBarActivity)getActivity();
-        	if(act != null){
-        		ActionBar actBar = act.getSupportActionBar();
-        		if(actBar != null){
-        			actBar.setTitle(resId);
-        		}
-        	}
-        	
-        }
     }
 }
