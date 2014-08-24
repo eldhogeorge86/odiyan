@@ -1,12 +1,13 @@
 package com.fiftyradios.odiyan;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
+import java.util.HashMap;
 
-import com.parse.FindCallback;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
+import com.parse.FunctionCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,7 +21,7 @@ import android.widget.Toast;
 
 public class FeedQueryAdapter extends BaseAdapter {
 
-	private ArrayList<ParseObject> mQuestionList;
+	private FeedData mData;
 	private Activity mActivity;
 	private LayoutInflater mInflater;
 	private OnLoadListener mLoadListner;
@@ -29,31 +30,32 @@ public class FeedQueryAdapter extends BaseAdapter {
 		
 		mLoadListner = listner;
 		mActivity = act;
-		mQuestionList = new ArrayList<ParseObject>();
+		mData = new FeedData();
+		mData.questions = new ArrayList<FeedQueryAdapter.QuestionData>();
 		
 		mInflater = (LayoutInflater)mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
 		queryData();
 	}
 	
-	public FeedQueryAdapter(Activity act, ArrayList<ParseObject> qList, OnLoadListener listner){
+	public FeedQueryAdapter(Activity act, FeedQueryAdapter.FeedData data, OnLoadListener listner){
 		
 		mLoadListner = listner;
 		mActivity = act;
-		mQuestionList = qList;
+		mData = data;
 		mInflater = (LayoutInflater)mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
 	@Override
 	public int getCount() {
 		
-		return mQuestionList.size();
+		return mData.questions.size();
 	}
 
 	@Override
 	public Object getItem(int pos) {
 		
-		return mQuestionList.get(pos);
+		return mData.questions.get(pos);
 	}
 
 	@Override
@@ -96,17 +98,13 @@ public class FeedQueryAdapter extends BaseAdapter {
 			holder=(ViewHolder)vi.getTag();
 		}
 		
-		ParseObject questionObj = mQuestionList.get(position);
-		ParseObject user = questionObj.getParseObject("user");
-		String name = user.getString("name");
-		String data = questionObj.getString("data");
+		QuestionData questionObj = mData.questions.get(position);
 		
-		holder.user.setText(name);
-		holder.question.setText(data);
+		holder.user.setText(questionObj.userName);
+		holder.question.setText(questionObj.data);
 		
-		if(questionObj.has("answer1")){
-			ParseObject answer = questionObj.getParseObject("answer1");
-			holder.answer1.setText(answer.getString("text"));
+		if(questionObj.answer1 != null){
+			holder.answer1.setText(questionObj.answer1.data);
 			
 			holder.answer1.setVisibility(View.VISIBLE);
 			holder.answer_view1.setVisibility(View.VISIBLE);
@@ -115,9 +113,8 @@ public class FeedQueryAdapter extends BaseAdapter {
 			holder.answer_view1.setVisibility(View.GONE);
 		}
 		
-		if(questionObj.has("answer2")){
-			ParseObject answer = questionObj.getParseObject("answer2");
-			holder.answer2.setText(answer.getString("text"));
+		if(questionObj.answer2 != null){
+			holder.answer2.setText(questionObj.answer2.data);
 			
 			holder.answer2.setVisibility(View.VISIBLE);
 			holder.answer_view2.setVisibility(View.VISIBLE);
@@ -125,10 +122,9 @@ public class FeedQueryAdapter extends BaseAdapter {
 			holder.answer2.setVisibility(View.GONE);
 			holder.answer_view2.setVisibility(View.GONE);
 		}
-
-		if(questionObj.has("answer3")){
-			ParseObject answer = questionObj.getParseObject("answer3");
-			holder.answer3.setText(answer.getString("text"));
+		
+		if(questionObj.answer3 != null){
+			holder.answer3.setText(questionObj.answer3.data);
 			
 			holder.answer3.setVisibility(View.VISIBLE);
 			holder.answer_view3.setVisibility(View.VISIBLE);
@@ -137,9 +133,8 @@ public class FeedQueryAdapter extends BaseAdapter {
 			holder.answer_view3.setVisibility(View.GONE);
 		}
 		
-		if(questionObj.has("answer4")){
-			ParseObject answer = questionObj.getParseObject("answer4");
-			holder.answer4.setText(answer.getString("text"));
+		if(questionObj.answer4 != null){
+			holder.answer4.setText(questionObj.answer4.data);
 			
 			holder.answer4.setVisibility(View.VISIBLE);
 			holder.answer_view4.setVisibility(View.VISIBLE);
@@ -148,62 +143,139 @@ public class FeedQueryAdapter extends BaseAdapter {
 			holder.answer_view4.setVisibility(View.GONE);
 		}
 		
-		if(questionObj.has("answer5")){
-			ParseObject answer = questionObj.getParseObject("answer5");
-			holder.answer5.setText(answer.getString("text"));
+		if(questionObj.answer5 != null){
+			holder.answer5.setText(questionObj.answer5.data);
 			
 			holder.answer5.setVisibility(View.VISIBLE);
 			holder.answer_view5.setVisibility(View.VISIBLE);
 		}else{
 			holder.answer5.setVisibility(View.GONE);
 			holder.answer_view5.setVisibility(View.GONE);
-		}		
+		}
 		
 		return vi;
 	}
 
-	public ArrayList<ParseObject> getData(){
-		return mQuestionList;
+	public FeedQueryAdapter.FeedData getData(){
+		return mData;
 	}
 	
 	private void queryData(){
 		
 		if(mLoadListner != null){
 			mLoadListner.onLoading();
-		}
+		}		
 		
-		ParseQuery<ParseObject> query = ParseQuery.getQuery("Question");
-		query.include("user");
-		query.include("answer1");
-		query.include("answer2");
-		query.include("answer3");
-		query.include("answer4");
-		query.include("answer5");
-		query.orderByDescending("updatedAt");
-		query.findInBackground(new FindCallback<ParseObject>() {
-		    public void done(List<ParseObject> qList, ParseException e) {
-		        if (e == null) {
-		        	fillData(qList);
-		        } else {
-		        	Toast toast = Toast.makeText(mActivity, "Network Error", Toast.LENGTH_SHORT);
-                	toast.show();
-		        }
-		        
-		        if(mLoadListner != null){
-					mLoadListner.onLoaded();
-				}
+		ParseUser user = ParseUser.getCurrentUser();
+		HashMap<String, Object> args = new HashMap<String, Object>();
+		args.put("limit", 20);
+		args.put("skip", 0);
+		args.put("userId", user.getObjectId());
+		ParseCloud.callFunctionInBackground("queryFeed", args, new FunctionCallback<ArrayList<Object>>() {
+		  public void done(ArrayList<Object> result, ParseException e) {
+		    if (e == null) {
+		    	fillData(result);
+		    }else{
+		    	Toast toast = Toast.makeText(mActivity, "Network Error", Toast.LENGTH_SHORT);
+            	toast.show();
 		    }
+		    
+		    if(mLoadListner != null){
+				mLoadListner.onLoaded();
+			}
+		  }
 		});
 	}
 	
-	private void fillData(List<ParseObject> qList){
+	@SuppressWarnings("unchecked")
+	private void fillData(ArrayList<Object> qList){
 		
-		mQuestionList.clear();
+		mData.questions.clear();
 		
-		for(ParseObject qObj : qList){
-			mQuestionList.add(qObj);
+		for(Object qObj : qList){
+			QuestionData qData = new QuestionData();
+			
+			HashMap<String, Object> qMap = (HashMap<String, Object>)qObj;
+			qData.id = (String)qMap.get("i");
+			qData.createdAt = (Date)qMap.get("c");
+			qData.updatedAt = (Date)qMap.get("u");
+			qData.data = (String)qMap.get("q");
+			
+			qData.userId = (String)qMap.get("ui");
+			qData.userName = (String)qMap.get("un");
+			
+			qData.votedByMe = (Boolean)qMap.get("v");
+			qData.myAnswerId = (String)qMap.get("ma");
+			
+			if(qMap.containsKey("a1")){
+				HashMap<String, Object> ans = (HashMap<String, Object>)qMap.get("a1");
+				qData.answer1 = new QuestionData.AnswerData();
+				qData.answer1.id = (String)ans.get("i");
+				qData.answer1.data = (String)ans.get("t");
+				qData.answer1.voteCount = (Integer)ans.get("c");
+			}
+			if(qMap.containsKey("a2")){
+				HashMap<String, Object> ans = (HashMap<String, Object>)qMap.get("a2");
+				qData.answer2 = new QuestionData.AnswerData();
+				qData.answer2.id = (String)ans.get("i");
+				qData.answer2.data = (String)ans.get("t");
+				qData.answer2.voteCount = (Integer)ans.get("c");
+			}
+			if(qMap.containsKey("a3")){
+				HashMap<String, Object> ans = (HashMap<String, Object>)qMap.get("a3");
+				qData.answer3 = new QuestionData.AnswerData();
+				qData.answer3.id = (String)ans.get("i");
+				qData.answer3.data = (String)ans.get("t");
+				qData.answer3.voteCount = (Integer)ans.get("c");
+			}
+			if(qMap.containsKey("a4")){
+				HashMap<String, Object> ans = (HashMap<String, Object>)qMap.get("a4");
+				qData.answer4 = new QuestionData.AnswerData();
+				qData.answer4.id = (String)ans.get("i");
+				qData.answer4.data = (String)ans.get("t");
+				qData.answer4.voteCount = (Integer)ans.get("c");
+			}
+			if(qMap.containsKey("a5")){
+				HashMap<String, Object> ans = (HashMap<String, Object>)qMap.get("a5");
+				qData.answer5 = new QuestionData.AnswerData();
+				qData.answer5.id = (String)ans.get("i");
+				qData.answer5.data = (String)ans.get("t");
+				qData.answer5.voteCount = (Integer)ans.get("c");
+			}
+			
+			mData.questions.add(qData);
 		}
+		
 		notifyDataSetChanged();
+	}
+	
+	public static class FeedData{
+		public ArrayList<QuestionData> questions;
+		public int skip;
+		public int count;
+	}
+	
+	public static class QuestionData{
+		public String id;
+		public Date createdAt;
+		public Date updatedAt;
+		public String data;
+		public String userId;
+		public String userName;
+		public boolean votedByMe;
+		public String myAnswerId;
+		
+		public AnswerData answer1;
+		public AnswerData answer2;
+		public AnswerData answer3;
+		public AnswerData answer4;
+		public AnswerData answer5;
+		
+		public static class AnswerData{
+			public String id;
+			public String data;
+			public int voteCount;
+		}
 	}
 	
 	public static class ViewHolder{

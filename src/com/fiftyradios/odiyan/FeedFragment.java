@@ -1,9 +1,5 @@
 package com.fiftyradios.odiyan;
 
-import java.util.ArrayList;
-
-import com.parse.ParseObject;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -84,17 +80,17 @@ public class FeedFragment extends Fragment {
 	
 	public class QuestionStore extends Fragment{
     	
-    	private ArrayList<ParseObject> mData;
+    	private FeedQueryAdapter.FeedData mData;
     	
     	public QuestionStore(){
     		
     	}
     	
-    	public QuestionStore(ArrayList<ParseObject> data){
+    	public QuestionStore(FeedQueryAdapter.FeedData data){
     		mData = data;
     	}
     	
-    	public ArrayList<ParseObject> getData(){
+    	public FeedQueryAdapter.FeedData getData(){
     		return mData;
     	}
     	
