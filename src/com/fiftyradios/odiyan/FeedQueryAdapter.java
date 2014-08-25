@@ -104,6 +104,8 @@ public class FeedQueryAdapter extends BaseAdapter {
 	
 	private void prepareAnswerView(final QuestionData qData, final QuestionData.AnswerData ansObj, ViewHolder.AnswerView ansView, final ParseUser user, final ViewHolder holder, final int ans){
 		if(ansObj != null){
+			ansView.ans_layout.setVisibility(View.VISIBLE);
+			
 			if(qData.votedByMe){
 				ansView.ans_btn.setVisibility(View.GONE);
 				ansView.ans_vote_layout.setVisibility(View.VISIBLE);
@@ -138,11 +140,11 @@ public class FeedQueryAdapter extends BaseAdapter {
 						ParseObject vote = new ParseObject("Vote");
 						vote.put("user", user);
 						vote.put("isAnonymous", false);
-						vote.put("ans", 1);
+						vote.put("ans", ans);
 						
 						ParseObject qObj = ParseObject.createWithoutData("Question", qData.id);
 						qObj.increment("count");
-						qObj.increment("ans1_count");
+						qObj.increment("ans" + ans + "_count");
 						vote.put("question", qObj);	
 						vote.saveEventually();
 						

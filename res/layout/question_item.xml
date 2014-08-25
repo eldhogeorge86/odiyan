@@ -79,7 +79,8 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="40dp"
 	                android:layout_weight=".75"
-	                android:background="@color/ans1_color" >
+	                android:background="@color/ans1_color"
+	                android:orientation="horizontal" >
 	
 	            </LinearLayout>
 	
@@ -87,7 +88,8 @@
 	                android:id="@+id/ans1_per2"
 	                android:layout_width="wrap_content"
 	                android:layout_height="40dp"
-	                android:layout_weight=".25" >
+	                android:layout_weight=".25"
+	                android:orientation="horizontal" >
 	
 	            </LinearLayout>
 	
@@ -103,6 +105,7 @@
 	                android:layout_height="wrap_content"
 	                android:layout_gravity="center_vertical"
 	                android:layout_weight=".75"
+	                android:paddingLeft="10dp"
 	                android:text="TextView" />
 	
 	            <TextView
@@ -155,7 +158,8 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="40dp"
 	                android:layout_weight=".75"
-	                android:background="@color/ans2_color" >
+	                android:background="@color/ans2_color"
+	                android:orientation="horizontal" >
 	
 	            </LinearLayout>
 	
@@ -163,7 +167,8 @@
 	                android:id="@+id/ans2_per2"
 	                android:layout_width="wrap_content"
 	                android:layout_height="40dp"
-	                android:layout_weight=".25" >
+	                android:layout_weight=".25"
+	                android:orientation="horizontal" >
 	
 	            </LinearLayout>
 	
@@ -179,6 +184,7 @@
 	                android:layout_height="wrap_content"
 	                android:layout_gravity="center_vertical"
 	                android:layout_weight=".75"
+	                android:paddingLeft="10dp"
 	                android:text="TextView" />
 	
 	            <TextView
@@ -231,7 +237,8 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="40dp"
 	                android:layout_weight=".75"
-	                android:background="@color/ans3_color" >
+	                android:background="@color/ans3_color"
+	                android:orientation="horizontal" >
 	
 	            </LinearLayout>
 	
@@ -239,7 +246,8 @@
 	                android:id="@+id/ans3_per2"
 	                android:layout_width="wrap_content"
 	                android:layout_height="40dp"
-	                android:layout_weight=".25" >
+	                android:layout_weight=".25"
+	                android:orientation="horizontal" >
 	
 	            </LinearLayout>
 	
@@ -255,6 +263,7 @@
 	                android:layout_height="wrap_content"
 	                android:layout_gravity="center_vertical"
 	                android:layout_weight=".75"
+	                android:paddingLeft="10dp"
 	                android:text="TextView" />
 	
 	            <TextView
@@ -307,7 +316,8 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="40dp"
 	                android:layout_weight=".75"
-	                android:background="@color/ans4_color" >
+	                android:background="@color/ans4_color"
+	                android:orientation="horizontal" >
 	
 	            </LinearLayout>
 	
@@ -315,7 +325,8 @@
 	                android:id="@+id/ans4_per2"
 	                android:layout_width="wrap_content"
 	                android:layout_height="40dp"
-	                android:layout_weight=".25" >
+	                android:layout_weight=".25"
+	                android:orientation="horizontal" >
 	
 	            </LinearLayout>
 	
@@ -331,6 +342,7 @@
 	                android:layout_height="wrap_content"
 	                android:layout_gravity="center_vertical"
 	                android:layout_weight=".75"
+	                android:paddingLeft="10dp"
 	                android:text="TextView" />
 	
 	            <TextView
@@ -383,7 +395,8 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="40dp"
 	                android:layout_weight=".75"
-	                android:background="@color/ans5_color" >
+	                android:background="@color/ans5_color"
+	                android:orientation="horizontal" >
 	
 	            </LinearLayout>
 	
@@ -391,7 +404,8 @@
 	                android:id="@+id/ans5_per2"
 	                android:layout_width="wrap_content"
 	                android:layout_height="40dp"
-	                android:layout_weight=".25" >
+	                android:layout_weight=".25"
+	                android:orientation="horizontal" >
 	
 	            </LinearLayout>
 	
@@ -407,6 +421,7 @@
 	                android:layout_height="wrap_content"
 	                android:layout_gravity="center_vertical"
 	                android:layout_weight=".75"
+	                android:paddingLeft="10dp"
 	                android:text="TextView" />
 	
 	            <TextView
