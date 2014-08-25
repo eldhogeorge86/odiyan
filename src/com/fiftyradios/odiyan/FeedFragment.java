@@ -23,6 +23,7 @@ public class FeedFragment extends Fragment implements EndlessListView.EndlessLis
         View rootView = inflater.inflate(R.layout.feed_fragment, container, false); 
         
         final SwipeRefreshLayout swipeView = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
+        swipeView.setColorScheme(R.color.swipe_color_1, R.color.swipe_color_2, R.color.swipe_color_3, R.color.swipe_color_4);
         
         mListView = (EndlessListView)rootView.findViewById(R.id.feed_list);
         
