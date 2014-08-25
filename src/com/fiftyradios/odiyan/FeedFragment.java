@@ -8,47 +8,23 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.ListView;
 
-public class FeedFragment extends Fragment {
+public class FeedFragment extends Fragment implements EndlessListView.EndlessListener, FeedQueryAdapter.OnMoreLoadListener {
 
 	static final String STORE_NAME = "questions";
 	private QuestionStore mStore;
+	private FeedQueryAdapter mAdapter;
+	private EndlessListView mListView;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
     	
-        View rootView = inflater.inflate(R.layout.feed_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.feed_fragment, container, false); 
         
         final SwipeRefreshLayout swipeView = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
-        swipeView.setOnRefreshListener(new OnRefreshListener() {
-			
-			@Override
-			public void onRefresh() {
-				swipeView.setRefreshing(false);
-			}
-		});
         
-        ListView feedList = (ListView)rootView.findViewById(R.id.feed_list);
-        feedList.setOnScrollListener(new OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView absListView, int i) {
-     
-            }
-     
-            @Override
-            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                    if (firstVisibleItem == 0)
-                        swipeView.setEnabled(true);
-                    else
-                        swipeView.setEnabled(false);
-            }
-        });
-        
-        FeedQueryAdapter adapter = null;
+        mListView = (EndlessListView)rootView.findViewById(R.id.feed_list);
         
         FragmentManager fm = getActivity().getSupportFragmentManager();
         FeedQueryAdapter.OnLoadListener listner = new FeedQueryAdapter.OnLoadListener() {
@@ -65,18 +41,56 @@ public class FeedFragment extends Fragment {
 		};
         mStore = (QuestionStore)fm.findFragmentByTag(STORE_NAME);
         if(mStore == null){
-        	adapter = new FeedQueryAdapter(getActivity(), listner);
-        	mStore = new QuestionStore(adapter.getData());
+        	mAdapter = new FeedQueryAdapter(getActivity(), listner);
+        	mStore = new QuestionStore(mAdapter.getData());
         	fm.beginTransaction().add(mStore, STORE_NAME).commit();
         }
         else{
-        	adapter = new FeedQueryAdapter(getActivity(), mStore.getData(), listner);
+        	mAdapter = new FeedQueryAdapter(getActivity(), mStore.getData(), listner);
         }
+
+        swipeView.setOnRefreshListener(new OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+				mAdapter.refreshData();
+			}
+		});
         
-        feedList.setAdapter(adapter);
+        mAdapter.setMoreListner(this);
+        mListView.setLoadingView(R.layout.more_loading);
+        mListView.setAdapter(mAdapter);
+        
+        mListView.setListener(this);
         
         return rootView;
     }
+	
+	@Override
+	public void loadData() {
+		if(mAdapter != null){
+			mAdapter.loadMore();
+		}
+	}
+	
+	@Override
+	public void onMoreLoading() {
+		
+	}
+
+	@Override
+	public void onMoreLoaded() {
+		if(mListView != null){
+			mListView.finishLoading();
+		}		
+	}
+
+	@Override
+	public void onMoreLoadFailed() {
+		if(mListView != null){
+			mListView.finishLoading();
+		}
+	}
 	
 	public class QuestionStore extends Fragment{
     	

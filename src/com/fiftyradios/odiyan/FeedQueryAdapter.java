@@ -25,17 +25,21 @@ public class FeedQueryAdapter extends BaseAdapter {
 	private Activity mActivity;
 	private LayoutInflater mInflater;
 	private OnLoadListener mLoadListner;
+	private OnMoreLoadListener mMoreLoadListner;
+	private boolean mIsRefreshing;
 	
 	public FeedQueryAdapter(Activity act, OnLoadListener listner){
 		
 		mLoadListner = listner;
 		mActivity = act;
 		mData = new FeedData();
+		mData.skip = 0;
+		mData.count = 20;
 		mData.questions = new ArrayList<FeedQueryAdapter.QuestionData>();
 		
 		mInflater = (LayoutInflater)mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
-		queryData();
+		refreshData();
 	}
 	
 	public FeedQueryAdapter(Activity act, FeedQueryAdapter.FeedData data, OnLoadListener listner){
@@ -160,11 +164,16 @@ public class FeedQueryAdapter extends BaseAdapter {
 		return mData;
 	}
 	
-	private void queryData(){
+	public void refreshData(){
+		if(mIsRefreshing){
+			return;
+		}
 		
 		if(mLoadListner != null){
 			mLoadListner.onLoading();
-		}		
+		}
+		
+		mIsRefreshing = true;
 		
 		ParseUser user = ParseUser.getCurrentUser();
 		HashMap<String, Object> args = new HashMap<String, Object>();
@@ -174,6 +183,9 @@ public class FeedQueryAdapter extends BaseAdapter {
 		ParseCloud.callFunctionInBackground("queryFeed", args, new FunctionCallback<ArrayList<Object>>() {
 		  public void done(ArrayList<Object> result, ParseException e) {
 		    if (e == null) {
+		    	mData.questions.clear();
+		    	mData.skip = 0;
+		    	mData.count = 20;
 		    	fillData(result);
 		    }else{
 		    	Toast toast = Toast.makeText(mActivity, "Network Error", Toast.LENGTH_SHORT);
@@ -183,14 +195,58 @@ public class FeedQueryAdapter extends BaseAdapter {
 		    if(mLoadListner != null){
 				mLoadListner.onLoaded();
 			}
+		    
+		    mIsRefreshing = false;
+		  }
+		});
+	}
+	
+	public void loadMore(){
+		int skip = mData.skip + mData.count;
+		queryData(skip, mData.count);
+	}
+	
+	public void setMoreListner(OnMoreLoadListener listner){
+		mMoreLoadListner = listner;
+	}
+	
+	private void queryData(int skip, int limit){
+		
+		if(mIsRefreshing){
+			return;
+		}
+		
+		if(mMoreLoadListner != null){
+			mMoreLoadListner.onMoreLoading();
+		}		
+		
+		ParseUser user = ParseUser.getCurrentUser();
+		HashMap<String, Object> args = new HashMap<String, Object>();
+		args.put("limit", limit);
+		args.put("skip", skip);
+		args.put("userId", user.getObjectId());
+		ParseCloud.callFunctionInBackground("queryFeed", args, new FunctionCallback<ArrayList<Object>>() {
+		  public void done(ArrayList<Object> result, ParseException e) {
+		    if (e == null) {
+		    	mData.skip = mData.skip + result.size();
+		    	fillData(result);
+		    }else{
+		    	Toast toast = Toast.makeText(mActivity, "Network Error", Toast.LENGTH_SHORT);
+            	toast.show();
+            	if(mMoreLoadListner != null){
+            		mMoreLoadListner.onMoreLoadFailed();
+            	}
+		    }
+		    
+		    if(mMoreLoadListner != null){
+		    	mMoreLoadListner.onMoreLoaded();
+			}
 		  }
 		});
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void fillData(ArrayList<Object> qList){
-		
-		mData.questions.clear();
 		
 		for(Object qObj : qList){
 			QuestionData qData = new QuestionData();
@@ -299,5 +355,12 @@ public class FeedQueryAdapter extends BaseAdapter {
 		
 		public abstract void onLoading();
 		public abstract void onLoaded();
+	}
+	
+	public abstract static interface OnMoreLoadListener{
+		
+		public abstract void onMoreLoading();
+		public abstract void onMoreLoaded();
+		public abstract void onMoreLoadFailed();
 	}
 }
