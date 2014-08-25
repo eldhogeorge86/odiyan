@@ -92,6 +92,8 @@ public class FeedQueryAdapter extends BaseAdapter {
 		
 		holder.user.setText(questionObj.userName);
 		holder.question.setText(questionObj.data);
+		int totalVotes = this.getTotalVoteCount(questionObj);
+		holder.votes.setText("Votes : " + totalVotes);
 		
 		this.prepareAnswerView(questionObj, questionObj.answer1, holder.answer1, user, holder, 1);
 		this.prepareAnswerView(questionObj, questionObj.answer2, holder.answer2, user, holder, 2);
@@ -164,6 +166,9 @@ public class FeedQueryAdapter extends BaseAdapter {
 	private void prepareAfterVote(QuestionData qData, ViewHolder holder){
 		ParseUser user = ParseUser.getCurrentUser();
 		
+		int totalVotes = this.getTotalVoteCount(qData);
+		holder.votes.setText("Votes : " + totalVotes);
+		
 		this.prepareAnswerView(qData, qData.answer1, holder.answer1, user, holder, 1);
 		this.prepareAnswerView(qData, qData.answer2, holder.answer2, user, holder, 2);
 		this.prepareAnswerView(qData, qData.answer3, holder.answer3, user, holder, 3);
@@ -197,6 +202,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 		ViewHolder holder = new ViewHolder();
 		
 		holder.user = (TextView)parent.findViewById(R.id.user_text);
+		holder.votes = (TextView)parent.findViewById(R.id.question_votes);
 		holder.question = (TextView)parent.findViewById(R.id.question_data);
 		
 		holder.answer1 = new ViewHolder.AnswerView();		
