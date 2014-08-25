@@ -7,6 +7,7 @@ import java.util.HashMap;
 import com.parse.FunctionCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import android.app.Activity;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,24 +79,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 		if (vi == null){
 			vi = mInflater.inflate(R.layout.question_item, null);
 			
-			holder = new ViewHolder();
-			holder.user = (TextView)vi.findViewById(R.id.user_text);
-			holder.question = (TextView)vi.findViewById(R.id.question_data);
-			
-			holder.answer1 = (Button)vi.findViewById(R.id.ans_btn1);
-			holder.answer_view1 = vi.findViewById(R.id.ans_border1);
-			
-			holder.answer2 = (Button)vi.findViewById(R.id.ans_btn2);
-			holder.answer_view2 = vi.findViewById(R.id.ans_border2);
-			
-			holder.answer3 = (Button)vi.findViewById(R.id.ans_btn3);
-			holder.answer_view3 = vi.findViewById(R.id.ans_border3);
-			
-			holder.answer4 = (Button)vi.findViewById(R.id.ans_btn4);
-			holder.answer_view4 = vi.findViewById(R.id.ans_border4);
-			
-			holder.answer5 = (Button)vi.findViewById(R.id.ans_btn5);
-			holder.answer_view5 = vi.findViewById(R.id.ans_border5);
+			holder = this.fillHolder(vi);
 			
 			vi.setTag(holder);
 		}
@@ -102,64 +87,169 @@ public class FeedQueryAdapter extends BaseAdapter {
 			holder=(ViewHolder)vi.getTag();
 		}
 		
-		QuestionData questionObj = mData.questions.get(position);
+		final QuestionData questionObj = mData.questions.get(position);
+		final ParseUser user = ParseUser.getCurrentUser();
 		
 		holder.user.setText(questionObj.userName);
 		holder.question.setText(questionObj.data);
 		
-		if(questionObj.answer1 != null){
-			holder.answer1.setText(questionObj.answer1.data);
-			
-			holder.answer1.setVisibility(View.VISIBLE);
-			holder.answer_view1.setVisibility(View.VISIBLE);
-		}else{
-			holder.answer1.setVisibility(View.GONE);
-			holder.answer_view1.setVisibility(View.GONE);
-		}
-		
-		if(questionObj.answer2 != null){
-			holder.answer2.setText(questionObj.answer2.data);
-			
-			holder.answer2.setVisibility(View.VISIBLE);
-			holder.answer_view2.setVisibility(View.VISIBLE);
-		}else{
-			holder.answer2.setVisibility(View.GONE);
-			holder.answer_view2.setVisibility(View.GONE);
-		}
-		
-		if(questionObj.answer3 != null){
-			holder.answer3.setText(questionObj.answer3.data);
-			
-			holder.answer3.setVisibility(View.VISIBLE);
-			holder.answer_view3.setVisibility(View.VISIBLE);
-		}else{
-			holder.answer3.setVisibility(View.GONE);
-			holder.answer_view3.setVisibility(View.GONE);
-		}
-		
-		if(questionObj.answer4 != null){
-			holder.answer4.setText(questionObj.answer4.data);
-			
-			holder.answer4.setVisibility(View.VISIBLE);
-			holder.answer_view4.setVisibility(View.VISIBLE);
-		}else{
-			holder.answer4.setVisibility(View.GONE);
-			holder.answer_view4.setVisibility(View.GONE);
-		}
-		
-		if(questionObj.answer5 != null){
-			holder.answer5.setText(questionObj.answer5.data);
-			
-			holder.answer5.setVisibility(View.VISIBLE);
-			holder.answer_view5.setVisibility(View.VISIBLE);
-		}else{
-			holder.answer5.setVisibility(View.GONE);
-			holder.answer_view5.setVisibility(View.GONE);
-		}
+		this.prepareAnswerView(questionObj, questionObj.answer1, holder.answer1, user, holder, 1);
+		this.prepareAnswerView(questionObj, questionObj.answer2, holder.answer2, user, holder, 2);
+		this.prepareAnswerView(questionObj, questionObj.answer3, holder.answer3, user, holder, 3);
+		this.prepareAnswerView(questionObj, questionObj.answer4, holder.answer4, user, holder, 4);
+		this.prepareAnswerView(questionObj, questionObj.answer5, holder.answer5, user, holder, 5);
 		
 		return vi;
 	}
+	
+	private void prepareAnswerView(final QuestionData qData, final QuestionData.AnswerData ansObj, ViewHolder.AnswerView ansView, final ParseUser user, final ViewHolder holder, final int ans){
+		if(ansObj != null){
+			if(qData.votedByMe){
+				ansView.ans_btn.setVisibility(View.GONE);
+				ansView.ans_vote_layout.setVisibility(View.VISIBLE);
+				
+				ansView.ans_data.setText(ansObj.data);
+				float totalVotes = this.getTotalVoteCount(qData);
+				float ansVote = ansObj.voteCount;
+				long votePer = Math.round(((ansVote * 100.0) / totalVotes));
+				float votePerDouble = (float) (((float)votePer)/ 100.0);
+				float votePerDoubleRem = (float) (((float)(100 - votePer))/ 100.0);
+				
+				ViewGroup.LayoutParams oldParam1 = ansView.ans_vote_per1.getLayoutParams();
+				LinearLayout.LayoutParams newParam1 = new LinearLayout.LayoutParams(
+						oldParam1.width, oldParam1.height, votePerDouble);
+				ansView.ans_vote_per1.setLayoutParams(newParam1);
+				
+				ViewGroup.LayoutParams oldParam2 = ansView.ans_vote_per2.getLayoutParams();
+				LinearLayout.LayoutParams newParam2 = new LinearLayout.LayoutParams(
+						oldParam2.width, oldParam2.height, votePerDoubleRem);
+				ansView.ans_vote_per2.setLayoutParams(newParam2);
+				
+				ansView.ans_vote_per.setText(votePer + "%");
+				
+			}else{
+				ansView.ans_btn.setVisibility(View.VISIBLE);
+				ansView.ans_vote_layout.setVisibility(View.GONE);
+				ansView.ans_btn.setText(ansObj.data);
+				ansView.ans_btn.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View clickedView) {
+						ParseObject vote = new ParseObject("Vote");
+						vote.put("user", user);
+						vote.put("isAnonymous", false);
+						vote.put("ans", 1);
+						
+						ParseObject qObj = ParseObject.createWithoutData("Question", qData.id);
+						qObj.increment("count");
+						qObj.increment("ans1_count");
+						vote.put("question", qObj);	
+						vote.saveEventually();
+						
+						ansObj.voteCount++;
+						qData.votedByMe = true;
+						qData.myAnswerId = ans;
+						
+						prepareAfterVote(qData, holder);
+					}
+				});
+			}			
+		}else{
+			ansView.ans_layout.setVisibility(View.GONE);
+		}
+	}
 
+	private void prepareAfterVote(QuestionData qData, ViewHolder holder){
+		ParseUser user = ParseUser.getCurrentUser();
+		
+		this.prepareAnswerView(qData, qData.answer1, holder.answer1, user, holder, 1);
+		this.prepareAnswerView(qData, qData.answer2, holder.answer2, user, holder, 2);
+		this.prepareAnswerView(qData, qData.answer3, holder.answer3, user, holder, 3);
+		this.prepareAnswerView(qData, qData.answer4, holder.answer4, user, holder, 4);
+		this.prepareAnswerView(qData, qData.answer5, holder.answer5, user, holder, 5);
+	}
+	
+	private int getTotalVoteCount(QuestionData qData){
+		int count = 0;
+		
+		if(qData.answer1 != null){
+			count += qData.answer1.voteCount;
+		}
+		if(qData.answer2 != null){
+			count += qData.answer2.voteCount;
+		}
+		if(qData.answer3 != null){
+			count += qData.answer3.voteCount;
+		}
+		if(qData.answer4 != null){
+			count += qData.answer4.voteCount;
+		}
+		if(qData.answer5 != null){
+			count += qData.answer5.voteCount;
+		}
+		
+		return count;
+	}
+	
+	private ViewHolder fillHolder(View parent){
+		ViewHolder holder = new ViewHolder();
+		
+		holder.user = (TextView)parent.findViewById(R.id.user_text);
+		holder.question = (TextView)parent.findViewById(R.id.question_data);
+		
+		holder.answer1 = new ViewHolder.AnswerView();		
+		holder.answer1.ans_layout = parent.findViewById(R.id.ans1_btn);
+		holder.answer1.ans_btn = (Button)parent.findViewById(R.id.ans_btn1);
+		holder.answer1.ans_border = parent.findViewById(R.id.ans_border1);
+		holder.answer1.ans_vote_layout = parent.findViewById(R.id.ans1_afterVote);
+		holder.answer1.ans_vote_per1 = parent.findViewById(R.id.ans1_per1);
+		holder.answer1.ans_vote_per2 = parent.findViewById(R.id.ans1_per2);
+		holder.answer1.ans_data = (TextView)parent.findViewById(R.id.ans1_data);
+		holder.answer1.ans_vote_per = (TextView)parent.findViewById(R.id.ans1_per);
+		
+		holder.answer2 = new ViewHolder.AnswerView();		
+		holder.answer2.ans_layout = parent.findViewById(R.id.ans2_btn);
+		holder.answer2.ans_btn = (Button)parent.findViewById(R.id.ans_btn2);
+		holder.answer2.ans_border = parent.findViewById(R.id.ans_border2);
+		holder.answer2.ans_vote_layout = parent.findViewById(R.id.ans2_afterVote);
+		holder.answer2.ans_vote_per1 = parent.findViewById(R.id.ans2_per1);
+		holder.answer2.ans_vote_per2 = parent.findViewById(R.id.ans2_per2);
+		holder.answer2.ans_data = (TextView)parent.findViewById(R.id.ans2_data);
+		holder.answer2.ans_vote_per = (TextView)parent.findViewById(R.id.ans2_per);
+		
+		holder.answer3 = new ViewHolder.AnswerView();		
+		holder.answer3.ans_layout = parent.findViewById(R.id.ans3_btn);
+		holder.answer3.ans_btn = (Button)parent.findViewById(R.id.ans_btn3);
+		holder.answer3.ans_border = parent.findViewById(R.id.ans_border3);
+		holder.answer3.ans_vote_layout = parent.findViewById(R.id.ans3_afterVote);
+		holder.answer3.ans_vote_per1 = parent.findViewById(R.id.ans3_per1);
+		holder.answer3.ans_vote_per2 = parent.findViewById(R.id.ans3_per2);
+		holder.answer3.ans_data = (TextView)parent.findViewById(R.id.ans3_data);
+		holder.answer3.ans_vote_per = (TextView)parent.findViewById(R.id.ans3_per);
+		
+		holder.answer4 = new ViewHolder.AnswerView();		
+		holder.answer4.ans_layout = parent.findViewById(R.id.ans4_btn);
+		holder.answer4.ans_btn = (Button)parent.findViewById(R.id.ans_btn4);
+		holder.answer4.ans_border = parent.findViewById(R.id.ans_border4);
+		holder.answer4.ans_vote_layout = parent.findViewById(R.id.ans4_afterVote);
+		holder.answer4.ans_vote_per1 = parent.findViewById(R.id.ans4_per1);
+		holder.answer4.ans_vote_per2 = parent.findViewById(R.id.ans4_per2);
+		holder.answer4.ans_data = (TextView)parent.findViewById(R.id.ans4_data);
+		holder.answer4.ans_vote_per = (TextView)parent.findViewById(R.id.ans4_per);
+		
+		holder.answer5 = new ViewHolder.AnswerView();		
+		holder.answer5.ans_layout = parent.findViewById(R.id.ans5_btn);
+		holder.answer5.ans_btn = (Button)parent.findViewById(R.id.ans_btn5);
+		holder.answer5.ans_border = parent.findViewById(R.id.ans_border5);
+		holder.answer5.ans_vote_layout = parent.findViewById(R.id.ans5_afterVote);
+		holder.answer5.ans_vote_per1 = parent.findViewById(R.id.ans5_per1);
+		holder.answer5.ans_vote_per2 = parent.findViewById(R.id.ans5_per2);
+		holder.answer5.ans_data = (TextView)parent.findViewById(R.id.ans5_data);
+		holder.answer5.ans_vote_per = (TextView)parent.findViewById(R.id.ans5_per);
+		
+		return holder;
+	}
+	
 	public FeedQueryAdapter.FeedData getData(){
 		return mData;
 	}
@@ -261,40 +351,35 @@ public class FeedQueryAdapter extends BaseAdapter {
 			qData.userName = (String)qMap.get("un");
 			
 			qData.votedByMe = (Boolean)qMap.get("v");
-			qData.myAnswerId = (String)qMap.get("ma");
+			qData.myAnswerId = (Integer)qMap.get("ma");
 			
 			if(qMap.containsKey("a1")){
 				HashMap<String, Object> ans = (HashMap<String, Object>)qMap.get("a1");
 				qData.answer1 = new QuestionData.AnswerData();
-				qData.answer1.id = (String)ans.get("i");
 				qData.answer1.data = (String)ans.get("t");
 				qData.answer1.voteCount = (Integer)ans.get("c");
 			}
 			if(qMap.containsKey("a2")){
 				HashMap<String, Object> ans = (HashMap<String, Object>)qMap.get("a2");
 				qData.answer2 = new QuestionData.AnswerData();
-				qData.answer2.id = (String)ans.get("i");
 				qData.answer2.data = (String)ans.get("t");
 				qData.answer2.voteCount = (Integer)ans.get("c");
 			}
 			if(qMap.containsKey("a3")){
 				HashMap<String, Object> ans = (HashMap<String, Object>)qMap.get("a3");
 				qData.answer3 = new QuestionData.AnswerData();
-				qData.answer3.id = (String)ans.get("i");
 				qData.answer3.data = (String)ans.get("t");
 				qData.answer3.voteCount = (Integer)ans.get("c");
 			}
 			if(qMap.containsKey("a4")){
 				HashMap<String, Object> ans = (HashMap<String, Object>)qMap.get("a4");
 				qData.answer4 = new QuestionData.AnswerData();
-				qData.answer4.id = (String)ans.get("i");
 				qData.answer4.data = (String)ans.get("t");
 				qData.answer4.voteCount = (Integer)ans.get("c");
 			}
 			if(qMap.containsKey("a5")){
 				HashMap<String, Object> ans = (HashMap<String, Object>)qMap.get("a5");
 				qData.answer5 = new QuestionData.AnswerData();
-				qData.answer5.id = (String)ans.get("i");
 				qData.answer5.data = (String)ans.get("t");
 				qData.answer5.voteCount = (Integer)ans.get("c");
 			}
@@ -319,7 +404,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 		public String userId;
 		public String userName;
 		public boolean votedByMe;
-		public String myAnswerId;
+		public int myAnswerId;
 		
 		public AnswerData answer1;
 		public AnswerData answer2;
@@ -328,7 +413,6 @@ public class FeedQueryAdapter extends BaseAdapter {
 		public AnswerData answer5;
 		
 		public static class AnswerData{
-			public String id;
 			public String data;
 			public int voteCount;
 		}
@@ -339,16 +423,24 @@ public class FeedQueryAdapter extends BaseAdapter {
 		public TextView user;
         public TextView votes;
         public TextView question;
-        public Button answer1;
-        public View answer_view1;
-        public Button answer2;
-        public View answer_view2;
-        public Button answer3;
-        public View answer_view3;
-        public Button answer4;
-        public View answer_view4;
-        public Button answer5;
-        public View answer_view5;
+        
+        public AnswerView answer1;
+        public AnswerView answer2;
+        public AnswerView answer3;
+        public AnswerView answer4;
+        public AnswerView answer5;
+        
+        public static class AnswerView{
+        	public View ans_layout;
+        	public Button ans_btn;
+            public View ans_border;
+            
+            public View ans_vote_layout;
+            public View ans_vote_per1;
+            public View ans_vote_per2;
+            public TextView ans_vote_per;
+            public TextView ans_data;
+        }
     }	
 	
 	public abstract static interface OnLoadListener{

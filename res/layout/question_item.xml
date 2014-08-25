@@ -46,75 +46,386 @@
         android:layout_width="fill_parent"
         android:layout_height="0.5dp"
         android:background="@color/listitemdivider_bg" />
-    
-    <Button
-        android:id="@+id/ans_btn1"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/dialog_button"
-        android:gravity="left|center_vertical" />
 
-    <View
-        android:id="@+id/ans_border1"
-        android:layout_width="fill_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/listitemdivider_bg" />
-    
-    <Button
-        android:id="@+id/ans_btn2"
-        style="?android:attr/buttonStyleSmall"
+    <LinearLayout
+        android:id="@+id/ans1_btn"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/dialog_button"
-        android:gravity="left|center_vertical" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="0dp" >
 
-    <View
-        android:id="@+id/ans_border2"
-        android:layout_width="fill_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/listitemdivider_bg" />
+        <Button
+	        android:id="@+id/ans_btn1"
+	        style="?android:attr/buttonStyleSmall"
+	        android:layout_width="match_parent"
+	        android:layout_height="40dp"
+	        android:background="@drawable/dialog_button"
+	        android:gravity="left|center_vertical" />
+
+        <FrameLayout
+            android:id="@+id/ans1_afterVote"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:padding="0dp"
+            android:visibility="gone" >
+	
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:padding="0dp" >
+	
+	            <LinearLayout
+	                android:id="@+id/ans1_per1"
+	                android:layout_width="wrap_content"
+	                android:layout_height="40dp"
+	                android:layout_weight=".75"
+	                android:background="@color/ans1_color" >
+	
+	            </LinearLayout>
+	
+	            <LinearLayout
+	                android:id="@+id/ans1_per2"
+	                android:layout_width="wrap_content"
+	                android:layout_height="40dp"
+	                android:layout_weight=".25" >
+	
+	            </LinearLayout>
+	
+	        </LinearLayout>
+	
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="40dp" >
+	
+	            <TextView
+	                android:id="@+id/ans1_data"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:layout_weight=".75"
+	                android:text="TextView" />
+	
+	            <TextView
+	                android:id="@+id/ans1_per"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:layout_marginRight="5dp"
+	                android:text="25%"
+	                android:textColor="@color/ans_per_color" />
+	
+	        </LinearLayout>
+	
+	    </FrameLayout>
+	    <View
+	        android:id="@+id/ans_border1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="0.5dp"
+	        android:background="@color/listitemdivider_bg" />
+    </LinearLayout>
     
-    <Button
-        android:id="@+id/ans_btn3"
-        style="?android:attr/buttonStyleSmall"
+	<LinearLayout
+        android:id="@+id/ans2_btn"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/dialog_button"
-        android:gravity="left|center_vertical" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="0dp" >
 
-    <View
-        android:id="@+id/ans_border3"
-        android:layout_width="fill_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/listitemdivider_bg" />
+        <Button
+	        android:id="@+id/ans_btn2"
+	        style="?android:attr/buttonStyleSmall"
+	        android:layout_width="match_parent"
+	        android:layout_height="40dp"
+	        android:background="@drawable/dialog_button"
+	        android:gravity="left|center_vertical" />
+
+        <FrameLayout
+            android:id="@+id/ans2_afterVote"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:visibility="gone" >
+	
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:padding="0dp" >
+	
+	            <LinearLayout
+	                android:id="@+id/ans2_per1"
+	                android:layout_width="wrap_content"
+	                android:layout_height="40dp"
+	                android:layout_weight=".75"
+	                android:background="@color/ans2_color" >
+	
+	            </LinearLayout>
+	
+	            <LinearLayout
+	                android:id="@+id/ans2_per2"
+	                android:layout_width="wrap_content"
+	                android:layout_height="40dp"
+	                android:layout_weight=".25" >
+	
+	            </LinearLayout>
+	
+	        </LinearLayout>
+	
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="40dp" >
+	
+	            <TextView
+	                android:id="@+id/ans2_data"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:layout_weight=".75"
+	                android:text="TextView" />
+	
+	            <TextView
+	                android:id="@+id/ans2_per"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:layout_marginRight="5dp"
+	                android:text="25%"
+	                android:textColor="@color/ans_per_color" />
+	
+	        </LinearLayout>
+	
+	    </FrameLayout>
+	    <View
+	        android:id="@+id/ans_border2"
+	        android:layout_width="fill_parent"
+	        android:layout_height="0.5dp"
+	        android:background="@color/listitemdivider_bg" />
+    </LinearLayout>
     
-    <Button
-        android:id="@+id/ans_btn4"
-        style="?android:attr/buttonStyleSmall"
+	<LinearLayout
+        android:id="@+id/ans3_btn"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/dialog_button"
-        android:gravity="left|center_vertical" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="0dp" >
 
-    <View
-        android:id="@+id/ans_border4"
-        android:layout_width="fill_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/listitemdivider_bg" />
+        <Button
+	        android:id="@+id/ans_btn3"
+	        style="?android:attr/buttonStyleSmall"
+	        android:layout_width="match_parent"
+	        android:layout_height="40dp"
+	        android:background="@drawable/dialog_button"
+	        android:gravity="left|center_vertical" />
+
+        <FrameLayout
+            android:id="@+id/ans3_afterVote"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:visibility="gone" >
+	
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:padding="0dp" >
+	
+	            <LinearLayout
+	                android:id="@+id/ans3_per1"
+	                android:layout_width="wrap_content"
+	                android:layout_height="40dp"
+	                android:layout_weight=".75"
+	                android:background="@color/ans3_color" >
+	
+	            </LinearLayout>
+	
+	            <LinearLayout
+	                android:id="@+id/ans3_per2"
+	                android:layout_width="wrap_content"
+	                android:layout_height="40dp"
+	                android:layout_weight=".25" >
+	
+	            </LinearLayout>
+	
+	        </LinearLayout>
+	
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="40dp" >
+	
+	            <TextView
+	                android:id="@+id/ans3_data"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:layout_weight=".75"
+	                android:text="TextView" />
+	
+	            <TextView
+	                android:id="@+id/ans3_per"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:layout_marginRight="5dp"
+	                android:text="25%"
+	                android:textColor="@color/ans_per_color" />
+	
+	        </LinearLayout>
+	
+	    </FrameLayout>
+	    <View
+	        android:id="@+id/ans_border3"
+	        android:layout_width="fill_parent"
+	        android:layout_height="0.5dp"
+	        android:background="@color/listitemdivider_bg" />
+    </LinearLayout>
     
-    <Button
-        android:id="@+id/ans_btn5"
-        style="?android:attr/buttonStyleSmall"
+	<LinearLayout
+        android:id="@+id/ans4_btn"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/dialog_button"
-        android:gravity="left|center_vertical" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="0dp" >
 
-    <View
-        android:id="@+id/ans_border5"
-        android:layout_width="fill_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/listitemdivider_bg" />
+        <Button
+	        android:id="@+id/ans_btn4"
+	        style="?android:attr/buttonStyleSmall"
+	        android:layout_width="match_parent"
+	        android:layout_height="40dp"
+	        android:background="@drawable/dialog_button"
+	        android:gravity="left|center_vertical" />
+
+        <FrameLayout
+            android:id="@+id/ans4_afterVote"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:visibility="gone" >
+	
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:padding="0dp" >
+	
+	            <LinearLayout
+	                android:id="@+id/ans4_per1"
+	                android:layout_width="wrap_content"
+	                android:layout_height="40dp"
+	                android:layout_weight=".75"
+	                android:background="@color/ans4_color" >
+	
+	            </LinearLayout>
+	
+	            <LinearLayout
+	                android:id="@+id/ans4_per2"
+	                android:layout_width="wrap_content"
+	                android:layout_height="40dp"
+	                android:layout_weight=".25" >
+	
+	            </LinearLayout>
+	
+	        </LinearLayout>
+	
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="40dp" >
+	
+	            <TextView
+	                android:id="@+id/ans4_data"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:layout_weight=".75"
+	                android:text="TextView" />
+	
+	            <TextView
+	                android:id="@+id/ans4_per"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:layout_marginRight="5dp"
+	                android:text="25%"
+	                android:textColor="@color/ans_per_color" />
+	
+	        </LinearLayout>
+	
+	    </FrameLayout>
+	    <View
+	        android:id="@+id/ans_border4"
+	        android:layout_width="fill_parent"
+	        android:layout_height="0.5dp"
+	        android:background="@color/listitemdivider_bg" />
+    </LinearLayout>
+    
+	<LinearLayout
+        android:id="@+id/ans5_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="0dp" >
+
+        <Button
+	        android:id="@+id/ans_btn5"
+	        style="?android:attr/buttonStyleSmall"
+	        android:layout_width="match_parent"
+	        android:layout_height="40dp"
+	        android:background="@drawable/dialog_button"
+	        android:gravity="left|center_vertical" />
+
+        <FrameLayout
+            android:id="@+id/ans5_afterVote"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:visibility="gone" >
+	
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:padding="0dp" >
+	
+	            <LinearLayout
+	                android:id="@+id/ans5_per1"
+	                android:layout_width="wrap_content"
+	                android:layout_height="40dp"
+	                android:layout_weight=".75"
+	                android:background="@color/ans5_color" >
+	
+	            </LinearLayout>
+	
+	            <LinearLayout
+	                android:id="@+id/ans5_per2"
+	                android:layout_width="wrap_content"
+	                android:layout_height="40dp"
+	                android:layout_weight=".25" >
+	
+	            </LinearLayout>
+	
+	        </LinearLayout>
+	
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="40dp" >
+	
+	            <TextView
+	                android:id="@+id/ans5_data"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:layout_weight=".75"
+	                android:text="TextView" />
+	
+	            <TextView
+	                android:id="@+id/ans5_per"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:layout_marginRight="5dp"
+	                android:text="25%"
+	                android:textColor="@color/ans_per_color" />
+	
+	        </LinearLayout>
+	
+	    </FrameLayout>
+	    <View
+	        android:id="@+id/ans_border5"
+	        android:layout_width="fill_parent"
+	        android:layout_height="0.5dp"
+	        android:background="@color/listitemdivider_bg" />
+    </LinearLayout>
     
 </LinearLayout>

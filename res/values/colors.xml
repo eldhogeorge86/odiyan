@@ -27,4 +27,12 @@
     <color name="listview_bg">#FFDDDDDD</color>
     <color name="listitem_bg">#FFFFFFFF</color>
     <color name="listitemdivider_bg">#FFAAAAAA</color>
+    
+    <color name="ans1_color">#FF2DAAE2</color>
+    <color name="ans2_color">#FF91DF52</color>
+    <color name="ans3_color">#FFF0EF8B</color>
+    <color name="ans4_color">#FFFF3333</color>
+    <color name="ans5_color">#FFFF6699</color>
+    
+    <color name="ans_per_color">#FFAAAAAA</color>
 </resources>
