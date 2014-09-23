@@ -1,5 +1,6 @@
 package com.fiftyradios.odiyan;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -91,9 +93,21 @@ public class FeedQueryAdapter extends BaseAdapter {
 		final ParseUser user = ParseUser.getCurrentUser();
 		
 		holder.user.setText(questionObj.userName);
+		
+		SimpleDateFormat ft = new SimpleDateFormat ("dd MMM yyyy");
+		holder.time.setText(ft.format(questionObj.createdAt));
+		
 		holder.question.setText(questionObj.data);
 		int totalVotes = this.getTotalVoteCount(questionObj);
 		holder.votes.setText("Votes : " + totalVotes);
+		holder.more_btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				
+			}
+		});
 		
 		this.prepareAnswerView(questionObj, questionObj.answer1, holder.answer1, user, holder, 1);
 		this.prepareAnswerView(questionObj, questionObj.answer2, holder.answer2, user, holder, 2);
@@ -130,6 +144,12 @@ public class FeedQueryAdapter extends BaseAdapter {
 				ansView.ans_vote_per2.setLayoutParams(newParam2);
 				
 				ansView.ans_vote_per.setText(votePer + "%");
+				if(ans == qData.myAnswerId){
+					ansView.check.setVisibility(View.VISIBLE);
+				}
+				else{
+					ansView.check.setVisibility(View.GONE);
+				}
 				
 			}else{
 				ansView.ans_btn.setVisibility(View.VISIBLE);
@@ -202,8 +222,10 @@ public class FeedQueryAdapter extends BaseAdapter {
 		ViewHolder holder = new ViewHolder();
 		
 		holder.user = (TextView)parent.findViewById(R.id.user_text);
+		holder.time = (TextView)parent.findViewById(R.id.q_time);
 		holder.votes = (TextView)parent.findViewById(R.id.question_votes);
 		holder.question = (TextView)parent.findViewById(R.id.question_data);
+		holder.more_btn = (ImageButton)parent.findViewById(R.id.more_button);
 		
 		holder.answer1 = new ViewHolder.AnswerView();		
 		holder.answer1.ans_layout = parent.findViewById(R.id.ans1_btn);
@@ -214,6 +236,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 		holder.answer1.ans_vote_per2 = parent.findViewById(R.id.ans1_per2);
 		holder.answer1.ans_data = (TextView)parent.findViewById(R.id.ans1_data);
 		holder.answer1.ans_vote_per = (TextView)parent.findViewById(R.id.ans1_per);
+		holder.answer1.check = parent.findViewById(R.id.check_img1);
 		
 		holder.answer2 = new ViewHolder.AnswerView();		
 		holder.answer2.ans_layout = parent.findViewById(R.id.ans2_btn);
@@ -224,6 +247,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 		holder.answer2.ans_vote_per2 = parent.findViewById(R.id.ans2_per2);
 		holder.answer2.ans_data = (TextView)parent.findViewById(R.id.ans2_data);
 		holder.answer2.ans_vote_per = (TextView)parent.findViewById(R.id.ans2_per);
+		holder.answer2.check = parent.findViewById(R.id.check_img2);
 		
 		holder.answer3 = new ViewHolder.AnswerView();		
 		holder.answer3.ans_layout = parent.findViewById(R.id.ans3_btn);
@@ -234,6 +258,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 		holder.answer3.ans_vote_per2 = parent.findViewById(R.id.ans3_per2);
 		holder.answer3.ans_data = (TextView)parent.findViewById(R.id.ans3_data);
 		holder.answer3.ans_vote_per = (TextView)parent.findViewById(R.id.ans3_per);
+		holder.answer3.check = parent.findViewById(R.id.check_img3);
 		
 		holder.answer4 = new ViewHolder.AnswerView();		
 		holder.answer4.ans_layout = parent.findViewById(R.id.ans4_btn);
@@ -244,6 +269,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 		holder.answer4.ans_vote_per2 = parent.findViewById(R.id.ans4_per2);
 		holder.answer4.ans_data = (TextView)parent.findViewById(R.id.ans4_data);
 		holder.answer4.ans_vote_per = (TextView)parent.findViewById(R.id.ans4_per);
+		holder.answer4.check = parent.findViewById(R.id.check_img4);
 		
 		holder.answer5 = new ViewHolder.AnswerView();		
 		holder.answer5.ans_layout = parent.findViewById(R.id.ans5_btn);
@@ -254,6 +280,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 		holder.answer5.ans_vote_per2 = parent.findViewById(R.id.ans5_per2);
 		holder.answer5.ans_data = (TextView)parent.findViewById(R.id.ans5_data);
 		holder.answer5.ans_vote_per = (TextView)parent.findViewById(R.id.ans5_per);
+		holder.answer5.check = parent.findViewById(R.id.check_img5);
 		
 		return holder;
 	}
@@ -429,8 +456,10 @@ public class FeedQueryAdapter extends BaseAdapter {
 	public static class ViewHolder{
         
 		public TextView user;
+		public TextView time;
         public TextView votes;
         public TextView question;
+        public ImageButton more_btn;
         
         public AnswerView answer1;
         public AnswerView answer2;
@@ -448,6 +477,7 @@ public class FeedQueryAdapter extends BaseAdapter {
             public View ans_vote_per2;
             public TextView ans_vote_per;
             public TextView ans_data;
+            public View check;
         }
     }	
 	
