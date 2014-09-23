@@ -13,12 +13,16 @@ import com.parse.ParseUser;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,6 +96,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 		final QuestionData questionObj = mData.questions.get(position);
 		final ParseUser user = ParseUser.getCurrentUser();
 		
+		holder.profile.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.unknown));
 		holder.user.setText(questionObj.userName);
 		
 		SimpleDateFormat ft = new SimpleDateFormat ("dd MMM yyyy");
@@ -104,8 +109,27 @@ public class FeedQueryAdapter extends BaseAdapter {
 			
 			@Override
 			public void onClick(View v) {
-				
-				
+				Bundle bundle = new Bundle();
+				bundle.putString("qid", questionObj.id);
+				bundle.putBoolean("votedByMe", questionObj.votedByMe);
+				if(questionObj.answer1 != null){
+					bundle.putString("ans1", questionObj.answer1.data);
+				}
+				if(questionObj.answer2 != null){
+					bundle.putString("ans2", questionObj.answer2.data);
+				}
+				if(questionObj.answer3 != null){
+					bundle.putString("ans3", questionObj.answer3.data);
+				}
+				if(questionObj.answer4 != null){
+					bundle.putString("ans4", questionObj.answer4.data);
+				}
+				if(questionObj.answer5 != null){
+					bundle.putString("ans5", questionObj.answer5.data);
+				}
+				DialogFragment dialog = new QuestionMoreDialogFragment();
+				dialog.setArguments(bundle);
+		        dialog.show(((FragmentActivity)mActivity).getSupportFragmentManager(), "QuestionMoreDialogFragment");				
 			}
 		});
 		
@@ -221,6 +245,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 	private ViewHolder fillHolder(View parent){
 		ViewHolder holder = new ViewHolder();
 		
+		holder.profile = (ImageView)parent.findViewById(R.id.q_profile_pic);
 		holder.user = (TextView)parent.findViewById(R.id.user_text);
 		holder.time = (TextView)parent.findViewById(R.id.q_time);
 		holder.votes = (TextView)parent.findViewById(R.id.question_votes);
@@ -381,6 +406,9 @@ public class FeedQueryAdapter extends BaseAdapter {
 			qData.createdAt = (Date)qMap.get("c");
 			qData.updatedAt = (Date)qMap.get("u");
 			qData.data = (String)qMap.get("q");
+			if(qMap.containsKey("g")){
+				qData.profile = (String)qMap.get("g");
+			}
 			
 			qData.userId = (String)qMap.get("ui");
 			qData.userName = (String)qMap.get("un");
@@ -433,6 +461,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 	
 	public static class QuestionData{
 		public String id;
+		public String profile;
 		public Date createdAt;
 		public Date updatedAt;
 		public String data;
@@ -455,6 +484,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 	
 	public static class ViewHolder{
         
+		public ImageView profile;
 		public TextView user;
 		public TextView time;
         public TextView votes;

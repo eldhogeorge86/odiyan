@@ -4,68 +4,62 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <Button
+        android:id="@+id/view_votes_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/flat_button"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="10dp"
+        android:text="View Votes" />
+    
     <View
-        android:id="@+id/more_view1"
+        android:id="@+id/q_more_view1"
         android:layout_width="fill_parent"
         android:layout_height="0.5dp"
         android:background="@color/listitemdivider_bg" />
     
     <Button
-        android:id="@+id/my_q_btn"
+        android:id="@+id/follow_user_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/flat_button"
         android:gravity="left|center_vertical"
-        android:paddingLeft="25dp"
-        android:text="My Questions" />
-    
-    <View
-        android:id="@+id/more_view2"
-        android:layout_width="fill_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/listitemdivider_bg" />
+        android:paddingLeft="10dp"
+        android:text="Follow" />
 
-    <Button
-        android:id="@+id/my_ans_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left|center_vertical"
-        android:paddingLeft="25dp"
-        android:background="@drawable/flat_button"
-        android:text="My Answers" />
-    
     <View
-        android:id="@+id/more_view3"
+        android:id="@+id/q_more_view2"
         android:layout_width="fill_parent"
         android:layout_height="0.5dp"
         android:background="@color/listitemdivider_bg" />
-
+    
     <Button
-        android:id="@+id/settings_btn"
+        android:id="@+id/share_q_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="left|center_vertical"
-        android:paddingLeft="25dp"
         android:background="@drawable/flat_button"
-        android:text="Settings" />
-    
+        android:gravity="left|center_vertical"
+        android:paddingLeft="10dp"
+        android:text="Share Question" />
+
     <View
-        android:id="@+id/more_view4"
+        android:id="@+id/q_more_view3"
         android:layout_width="fill_parent"
         android:layout_height="0.5dp"
         android:background="@color/listitemdivider_bg" />
-
+    
     <Button
-        android:id="@+id/logout_btn"
+        android:id="@+id/report_q_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/flat_button"
         android:gravity="left|center_vertical"
-        android:paddingLeft="25dp"
-        android:text="Logout" />
-    
+        android:paddingLeft="10dp"
+        android:text="Report Question" />
+
     <View
-        android:id="@+id/more_view5"
+        android:id="@+id/q_more_view4"
         android:layout_width="fill_parent"
         android:layout_height="0.5dp"
         android:background="@color/listitemdivider_bg" />

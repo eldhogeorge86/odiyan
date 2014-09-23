@@ -16,7 +16,7 @@ import android.os.Build;
 public class MainActivity extends ActionBarActivity implements
 						ParseLoginFragment.ParseLoginFragmentListener,
 						ParseLoginHelpFragment.ParseOnLoginHelpSuccessListener,
-						ParseOnLoginSuccessListener, ParseOnLoadingListener {
+						ParseOnLoginSuccessListener, ParseOnLoadingListener, LogoutListener {
 
 	// Although Activity.isDestroyed() is in API 17, we implement it anyways for older versions.
 	private boolean destroyed = false;
@@ -127,5 +127,16 @@ public class MainActivity extends ActionBarActivity implements
     	if (progressDialog != null) {
     		progressDialog.dismiss();
     	}
+    }
+    
+    @Override
+    public void onLogout() {
+    	ParseUser.logOut();
+    	
+    	getSupportActionBar().hide();
+    	
+    	getSupportFragmentManager().beginTransaction()
+			.replace(fragmentContainer, new ParseLoginFragment())
+			.commit();
     }
 }
