@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.parse.FunctionCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
@@ -13,6 +15,7 @@ import com.parse.ParseUser;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -96,7 +99,21 @@ public class FeedQueryAdapter extends BaseAdapter {
 		final QuestionData questionObj = mData.questions.get(position);
 		final ParseUser user = ParseUser.getCurrentUser();
 		
-		holder.profile.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.unknown));
+		Drawable fallback = mActivity.getResources().getDrawable(R.drawable.unknown);
+		
+		if(questionObj.profile != null){
+			ImageLoader imageLoader = ImageLoader.getInstance();
+			DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true)
+							.cacheOnDisk(true).resetViewBeforeLoading(true)
+							.showImageForEmptyUri(fallback)
+							.showImageOnFail(fallback)
+							.showImageOnLoading(fallback).build();
+			
+			imageLoader.displayImage(questionObj.profile, holder.profile, options);
+		}else{
+			holder.profile.setImageDrawable(fallback);
+		}
+		
 		holder.user.setText(questionObj.userName);
 		
 		SimpleDateFormat ft = new SimpleDateFormat ("dd MMM yyyy");
@@ -104,29 +121,24 @@ public class FeedQueryAdapter extends BaseAdapter {
 		
 		holder.question.setText(questionObj.data);
 		int totalVotes = this.getTotalVoteCount(questionObj);
+		
 		holder.votes.setText(totalVotes + " votes");
+		holder.votes.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Bundle bundle = createVotesBundle(questionObj);
+				DialogFragment dialog = new VotesDialogFragment();
+				dialog.setArguments(bundle);
+		        dialog.show(((FragmentActivity)mActivity).getSupportFragmentManager(), "VotesDialogFragment");				
+			}
+		});
+
 		holder.more_btn.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				Bundle bundle = new Bundle();
-				bundle.putString("qid", questionObj.id);
-				bundle.putBoolean("votedByMe", questionObj.votedByMe);
-				if(questionObj.answer1 != null){
-					bundle.putString("ans1", questionObj.answer1.data);
-				}
-				if(questionObj.answer2 != null){
-					bundle.putString("ans2", questionObj.answer2.data);
-				}
-				if(questionObj.answer3 != null){
-					bundle.putString("ans3", questionObj.answer3.data);
-				}
-				if(questionObj.answer4 != null){
-					bundle.putString("ans4", questionObj.answer4.data);
-				}
-				if(questionObj.answer5 != null){
-					bundle.putString("ans5", questionObj.answer5.data);
-				}
+				Bundle bundle = createVotesBundle(questionObj);
 				DialogFragment dialog = new QuestionMoreDialogFragment();
 				dialog.setArguments(bundle);
 		        dialog.show(((FragmentActivity)mActivity).getSupportFragmentManager(), "QuestionMoreDialogFragment");				
@@ -140,6 +152,29 @@ public class FeedQueryAdapter extends BaseAdapter {
 		this.prepareAnswerView(questionObj, questionObj.answer5, holder.answer5, user, holder, 5);
 		
 		return vi;
+	}
+	
+	private Bundle createVotesBundle(QuestionData questionObj){
+		Bundle bundle = new Bundle();
+		bundle.putString("qid", questionObj.id);
+		bundle.putBoolean("votedByMe", questionObj.votedByMe);
+		if(questionObj.answer1 != null){
+			bundle.putString("ans1", questionObj.answer1.data);
+		}
+		if(questionObj.answer2 != null){
+			bundle.putString("ans2", questionObj.answer2.data);
+		}
+		if(questionObj.answer3 != null){
+			bundle.putString("ans3", questionObj.answer3.data);
+		}
+		if(questionObj.answer4 != null){
+			bundle.putString("ans4", questionObj.answer4.data);
+		}
+		if(questionObj.answer5 != null){
+			bundle.putString("ans5", questionObj.answer5.data);
+		}
+		
+		return bundle;
 	}
 	
 	private void prepareAnswerView(final QuestionData qData, final QuestionData.AnswerData ansObj, ViewHolder.AnswerView ansView, final ParseUser user, final ViewHolder holder, final int ans){
@@ -211,7 +246,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 		ParseUser user = ParseUser.getCurrentUser();
 		
 		int totalVotes = this.getTotalVoteCount(qData);
-		holder.votes.setText("Votes : " + totalVotes);
+		holder.votes.setText(totalVotes + " votes");
 		
 		this.prepareAnswerView(qData, qData.answer1, holder.answer1, user, holder, 1);
 		this.prepareAnswerView(qData, qData.answer2, holder.answer2, user, holder, 2);
@@ -248,7 +283,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 		holder.profile = (ImageView)parent.findViewById(R.id.q_profile_pic);
 		holder.user = (TextView)parent.findViewById(R.id.user_text);
 		holder.time = (TextView)parent.findViewById(R.id.q_time);
-		holder.votes = (TextView)parent.findViewById(R.id.question_votes);
+		holder.votes = (Button)parent.findViewById(R.id.question_votes);
 		holder.question = (TextView)parent.findViewById(R.id.question_data);
 		holder.more_btn = (ImageButton)parent.findViewById(R.id.more_button);
 		
@@ -487,7 +522,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 		public ImageView profile;
 		public TextView user;
 		public TextView time;
-        public TextView votes;
+        public Button votes;
         public TextView question;
         public ImageButton more_btn;
         
