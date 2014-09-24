@@ -210,6 +210,18 @@ public class FeedQueryAdapter extends BaseAdapter {
 					ansView.check.setVisibility(View.GONE);
 				}
 				
+				ansView.ans_layout.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						Bundle args = createVotesBundle(qData);
+						args.putInt("ans", ans);
+						DialogFragment dialog = new VotesDialogFragment();
+						dialog.setArguments(args);
+				        dialog.show(((FragmentActivity)mActivity).getSupportFragmentManager(), "VotesDialogFragment");
+					}
+				});
+				
 			}else{
 				ansView.ans_btn.setVisibility(View.VISIBLE);
 				ansView.ans_vote_layout.setVisibility(View.GONE);

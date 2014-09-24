@@ -51,6 +51,10 @@ public class VotesQueryAdapter extends BaseAdapter {
 		
 		ParseQuery query = new ParseQuery("Vote");
 	    query.whereEqualTo("question", ParseObject.createWithoutData("Question", mArgs.getString("qid")));
+	    if(mArgs.containsKey("ans")){
+	    	int ans = mArgs.getInt("ans");
+	    	query.whereEqualTo("ans", ans);
+	    }
 	    query.orderByDescending("createdAt");
 	    query.include("user");
 	    
