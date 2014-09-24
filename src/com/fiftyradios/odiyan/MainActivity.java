@@ -199,4 +199,15 @@ public class MainActivity extends ActionBarActivity implements
     	transaction.addToBackStack(null);
     	transaction.commit();
     }
+    
+    @Override
+    public void showLoading(String text, boolean bShow){
+    	if(bShow){
+    		progressDialog = ProgressDialog.show(this, null, text, true, false);
+    	}else{
+    		if (progressDialog != null) {
+        		progressDialog.dismiss();
+        	}
+    	}
+    }
 }

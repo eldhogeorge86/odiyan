@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 public class FeedFragment extends Fragment implements EndlessListView.EndlessListener, FeedQueryAdapter.OnMoreLoadListener {
 
-	static final String STORE_NAME = "questions";
+	public static final String STORE_NAME = "questions";
 	private QuestionStore mStore;
 	private FeedQueryAdapter mAdapter;
 	private EndlessListView mListView;
