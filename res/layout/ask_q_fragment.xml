@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <EditText
+        android:id="@+id/q_txt"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/multiline_text"
+        android:ems="10"
+        android:gravity="top|left"
+        android:hint="Enter your question in 150 letters."
+        android:inputType="textMultiLine"
+        android:padding="5dp"
+        android:textColorHint="@color/hint_color" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/ans1_txt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/multiline_text"
+        android:ems="10"
+        android:hint="Answer 1"
+        android:paddingLeft="5dp"
+        android:textColorHint="@color/hint_color" />
+
+    <EditText
+        android:id="@+id/ans2_txt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/multiline_text"
+        android:ems="10"
+        android:hint="Answer 2"
+        android:paddingLeft="5dp"
+        android:layout_marginTop="-2dp"
+        android:textColorHint="@color/hint_color" />
+    
+    <EditText
+        android:id="@+id/ans3_txt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/multiline_text"
+        android:ems="10"
+        android:hint="Answer 3"
+        android:paddingLeft="5dp"
+        android:layout_marginTop="-2dp"
+        android:textColorHint="@color/hint_color" />
+    
+    <EditText
+        android:id="@+id/ans4_txt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/multiline_text"
+        android:ems="10"
+        android:hint="Answer 4"
+        android:paddingLeft="5dp"
+        android:layout_marginTop="-2dp"
+        android:textColorHint="@color/hint_color" />
+    
+    <EditText
+        android:id="@+id/ans5_txt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/multiline_text"
+        android:ems="10"
+        android:hint="Answer 5"
+        android:paddingLeft="5dp" 
+        android:layout_marginTop="-2dp"
+        android:textColorHint="@color/hint_color"/>
+
+    <Button
+        android:id="@+id/ask_q_btn"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/border_flat_btn"
+        android:text="Ask"
+        android:textColor="@color/actionbar_text" />
+
+</LinearLayout>

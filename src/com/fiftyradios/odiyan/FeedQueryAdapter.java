@@ -102,6 +102,9 @@ public class FeedQueryAdapter extends BaseAdapter {
 		Drawable fallback = mActivity.getResources().getDrawable(R.drawable.unknown);
 		
 		if(questionObj.profile != null){
+			holder.profile.setVisibility(View.VISIBLE);
+			holder.profile2.setVisibility(View.GONE);
+			
 			ImageLoader imageLoader = ImageLoader.getInstance();
 			DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true)
 							.cacheOnDisk(true).resetViewBeforeLoading(true)
@@ -111,7 +114,9 @@ public class FeedQueryAdapter extends BaseAdapter {
 			
 			imageLoader.displayImage(questionObj.profile, holder.profile, options);
 		}else{
-			holder.profile.setImageDrawable(fallback);
+			holder.profile.setVisibility(View.GONE);
+			holder.profile2.setVisibility(View.VISIBLE);
+			holder.profile2.setImageDrawable(fallback);
 		}
 		
 		holder.user.setText(questionObj.userName);
@@ -127,6 +132,10 @@ public class FeedQueryAdapter extends BaseAdapter {
 			
 			@Override
 			public void onClick(View v) {
+				if(!questionObj.votedByMe){
+					return;
+				}
+				
 				Bundle bundle = createVotesBundle(questionObj);
 				DialogFragment dialog = new VotesDialogFragment();
 				dialog.setArguments(bundle);
@@ -210,7 +219,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 					ansView.check.setVisibility(View.GONE);
 				}
 				
-				ansView.ans_layout.setOnClickListener(new View.OnClickListener() {
+				ansView.ans_vote_layout.setOnClickListener(new View.OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
@@ -293,6 +302,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 		ViewHolder holder = new ViewHolder();
 		
 		holder.profile = (ImageView)parent.findViewById(R.id.q_profile_pic);
+		holder.profile2 = (ImageView)parent.findViewById(R.id.q_profile_pic2);
 		holder.user = (TextView)parent.findViewById(R.id.user_text);
 		holder.time = (TextView)parent.findViewById(R.id.q_time);
 		holder.votes = (Button)parent.findViewById(R.id.question_votes);
@@ -532,6 +542,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 	public static class ViewHolder{
         
 		public ImageView profile;
+		public ImageView profile2;
 		public TextView user;
 		public TextView time;
         public Button votes;

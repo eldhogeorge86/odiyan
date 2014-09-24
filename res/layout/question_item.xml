@@ -19,6 +19,13 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/unknown" />
+        
+        <ImageView
+            android:id="@+id/q_profile_pic2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/unknown"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -27,8 +34,8 @@
             android:layout_marginLeft="5dp"
             android:layout_weight=".4"
             android:orientation="vertical"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp" >
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp" >
 
             <TextView
                 android:id="@+id/user_text"
@@ -61,7 +68,7 @@
                 android:id="@+id/question_votes"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
                 android:layout_gravity="right"
                 android:background="@drawable/custom_button"
                 android:gravity="right|center_vertical"

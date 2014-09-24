@@ -111,12 +111,16 @@ public class VotesQueryAdapter extends BaseAdapter {
 		ParseObject vote = mData.get(pos);
 		
 		ImageView img = (ImageView)v.findViewById(R.id.vote_pic_img);
+		ImageView img2 = (ImageView)v.findViewById(R.id.vote_pic_img2);
 		Drawable fallback = mActivity.getResources().getDrawable(R.drawable.unknown);
 		
 		ParseUser user = vote.getParseUser("user");
 		ParseFile file = user.getParseFile("img");
 		
 		if(file != null){
+			img2.setVisibility(View.GONE);
+			img.setVisibility(View.VISIBLE);
+			
 			ImageLoader imageLoader = ImageLoader.getInstance();
 			DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true)
 							.cacheOnDisk(true).resetViewBeforeLoading(true)
@@ -126,7 +130,9 @@ public class VotesQueryAdapter extends BaseAdapter {
 			
 			imageLoader.displayImage(file.getUrl(), img, options);
 		}else{
-			img.setImageDrawable(fallback);
+			img.setVisibility(View.GONE);
+			img2.setVisibility(View.VISIBLE);
+			img2.setImageDrawable(fallback);
 		}
 		
 		TextView userTxt = (TextView)v.findViewById(R.id.voted_user);

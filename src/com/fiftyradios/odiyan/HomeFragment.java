@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 public class HomeFragment extends Fragment implements ActionBar.TabListener {
 
@@ -49,6 +50,16 @@ public class HomeFragment extends Fragment implements ActionBar.TabListener {
         
         
         mSectionsPagerAdapter.notifyDataSetChanged();
+        
+        Button askBtn = (Button)rootView.findViewById(R.id.ask_q_btn);
+        askBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				MoreActionListener listener = (MoreActionListener)getActivity();
+				listener.onAsk();
+			}
+		});
         
         return rootView;
     }

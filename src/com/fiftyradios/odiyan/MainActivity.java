@@ -186,4 +186,17 @@ public class MainActivity extends ActionBarActivity implements
     	Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI); 
     	startActivityForResult(i, IMAGE_PICKER_SELECT);    	
     }
+    
+    @Override
+    public void onAsk(){
+    	ActionBar actBar = getSupportActionBar();
+        actBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        
+        actBar.removeAllTabs();
+        
+    	FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    	transaction.replace(fragmentContainer, new AskQuestionFragment());
+    	transaction.addToBackStack(null);
+    	transaction.commit();
+    }
 }
