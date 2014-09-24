@@ -4,19 +4,24 @@ import com.parse.ParseAnalytics;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Build;
+import android.provider.MediaStore;
 
 
 public class MainActivity extends ActionBarActivity implements
 						ParseLoginFragment.ParseLoginFragmentListener,
 						ParseLoginHelpFragment.ParseOnLoginHelpSuccessListener,
-						ParseOnLoginSuccessListener, ParseOnLoadingListener, LogoutListener {
+						ParseOnLoginSuccessListener, ParseOnLoadingListener, MoreActionListener {
 
 	// Although Activity.isDestroyed() is in API 17, we implement it anyways for older versions.
 	private boolean destroyed = false;
@@ -24,7 +29,11 @@ public class MainActivity extends ActionBarActivity implements
 	private ProgressDialog progressDialog;
 	
 	private final int fragmentContainer = R.id.container;
-	  
+	
+	private final int IMAGE_PICKER_SELECT = 9;
+	
+	private String mImagePath;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +79,18 @@ public class MainActivity extends ActionBarActivity implements
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
+		if (requestCode == IMAGE_PICKER_SELECT) {
+			if(resultCode == Activity.RESULT_OK){
+				Uri selectedImage = data.getData();
+				String[] filePathColumn = { MediaStore.Images.Media.DATA }; 
+				Cursor cursor = this.getContentResolver().query(selectedImage,filePathColumn, null, null, null); 
+				cursor.moveToFirst(); 
+				int columnIndex = cursor.getColumnIndex(filePathColumn[0]); 
+				mImagePath = cursor.getString(columnIndex); 
+				cursor.close();
+			}
+			return;
+		}
 		// Required for making Facebook login work
 		ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
     }
@@ -138,5 +159,31 @@ public class MainActivity extends ActionBarActivity implements
     	getSupportFragmentManager().beginTransaction()
 			.replace(fragmentContainer, new ParseLoginFragment())
 			.commit();
+    }
+    
+    @Override
+    public void onSettings(){
+    	
+    	mImagePath = null;
+        ActionBar actBar = getSupportActionBar();
+        actBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        
+        actBar.removeAllTabs();
+        
+    	FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    	transaction.replace(fragmentContainer, new SettingsFragment());
+    	transaction.addToBackStack(null);
+    	transaction.commit();
+    }
+    
+    @Override
+    public String getImagePath(){
+    	return mImagePath;
+    }
+    
+    @Override
+    public void pickImage(){
+    	Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI); 
+    	startActivityForResult(i, IMAGE_PICKER_SELECT);    	
     }
 }

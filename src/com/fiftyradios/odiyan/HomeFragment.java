@@ -25,7 +25,7 @@ public class HomeFragment extends Fragment implements ActionBar.TabListener {
     	
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getActivity().getSupportFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         mViewPager = (ViewPager) rootView.findViewById(R.id.pager);
         
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -46,6 +46,9 @@ public class HomeFragment extends Fragment implements ActionBar.TabListener {
             	actBar.setSelectedNavigationItem(position);
             }
         });
+        
+        
+        mSectionsPagerAdapter.notifyDataSetChanged();
         
         return rootView;
     }

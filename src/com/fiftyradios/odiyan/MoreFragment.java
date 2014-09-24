@@ -13,14 +13,26 @@ public class MoreFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
     	
-        View rootView = inflater.inflate(R.layout.more_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.more_fragment, container, false);        
+        
+        Button settings_btn = (Button)rootView.findViewById(R.id.settings_btn);
+        settings_btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				MoreActionListener listener = (MoreActionListener)getActivity();
+				listener.onSettings();
+			}
+		});
+        
         Button logoutBtn = (Button)rootView.findViewById(R.id.logout_btn);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				
-				LogoutListener listener = (LogoutListener)getActivity();
+				MoreActionListener listener = (MoreActionListener)getActivity();
 				listener.onLogout();
 			}
 		});

@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@color/listview_bg" >
 
     <View
         android:id="@+id/more_view1"
@@ -13,7 +14,7 @@
     <Button
         android:id="@+id/my_q_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="@drawable/flat_button"
         android:gravity="left|center_vertical"
         android:paddingLeft="25dp"
@@ -28,10 +29,10 @@
     <Button
         android:id="@+id/my_ans_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:background="@drawable/flat_button"
         android:gravity="left|center_vertical"
         android:paddingLeft="25dp"
-        android:background="@drawable/flat_button"
         android:text="My Answers" />
     
     <View
@@ -43,10 +44,10 @@
     <Button
         android:id="@+id/settings_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:background="@drawable/flat_button"
         android:gravity="left|center_vertical"
         android:paddingLeft="25dp"
-        android:background="@drawable/flat_button"
         android:text="Settings" />
     
     <View
@@ -58,7 +59,7 @@
     <Button
         android:id="@+id/logout_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="@drawable/flat_button"
         android:gravity="left|center_vertical"
         android:paddingLeft="25dp"

@@ -7,7 +7,7 @@
     <Button
         android:id="@+id/view_votes_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="@drawable/flat_button"
         android:gravity="left|center_vertical"
         android:paddingLeft="10dp"
@@ -22,7 +22,7 @@
     <Button
         android:id="@+id/follow_user_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="@drawable/flat_button"
         android:gravity="left|center_vertical"
         android:paddingLeft="10dp"
@@ -37,7 +37,7 @@
     <Button
         android:id="@+id/share_q_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="@drawable/flat_button"
         android:gravity="left|center_vertical"
         android:paddingLeft="10dp"
@@ -52,7 +52,7 @@
     <Button
         android:id="@+id/report_q_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="@drawable/flat_button"
         android:gravity="left|center_vertical"
         android:paddingLeft="10dp"

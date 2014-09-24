@@ -4,29 +4,56 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/voted_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
-        android:text="TextView" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        
+        <com.parse.ParseImageView
+            android:id="@+id/vote_pic_img"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/voted_ans"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="10dp"
-        android:text="TextView"
-        android:textColor="@color/ans_per_color"
-        android:textSize="10dp" />
+        <ImageView
+            android:id="@+id/vote_pic_img2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/unknown" />
+        
+        <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+    		android:orientation="vertical" >
+        
+	        <TextView
+		        android:id="@+id/voted_user"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginBottom="2dp"
+		        android:layout_marginLeft="10dp"
+		        android:layout_marginTop="5dp"
+		        android:text="TextView" />
+		
+		    <TextView
+		        android:id="@+id/voted_ans"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginBottom="5dp"
+		        android:layout_marginLeft="10dp"
+		        android:text="TextView"
+		        android:textColor="@color/ans_per_color"
+		        android:textSize="10dp" />
+	    </LinearLayout>
+    </LinearLayout>
     
     <View
         android:id="@+id/vote_view1"
         android:layout_width="fill_parent"
         android:layout_height="0.5dp"
-        android:background="@color/listitemdivider_bg" />
+        android:background="@color/listitemdivider_bg" />    
 
 </LinearLayout>

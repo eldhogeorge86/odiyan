@@ -104,7 +104,7 @@ public class FeedQueryAdapter extends BaseAdapter {
 		
 		holder.question.setText(questionObj.data);
 		int totalVotes = this.getTotalVoteCount(questionObj);
-		holder.votes.setText("Votes : " + totalVotes);
+		holder.votes.setText(totalVotes + " votes");
 		holder.more_btn.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
